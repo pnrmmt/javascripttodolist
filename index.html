@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="tr">
   <head>
@@ -75,17 +76,23 @@
         />
         <h2>Yapılacaklar Listesi</h2>
 
-        <form id="userForm">
-        <input class="todo_input" type="text" id="task" placeholder="Bugün ne yapacaksın?" />
-        <button type="submit" id="liveToastBtn" class="button">Ekle</button>
+        <div id="userForm">
+        <input class="todo_input" type="text" id="task" placeholder="Bugün ne yapacaksın?"  />
+        <button id="liveToastBtn" class="button">Ekle</button>
         <!-- <span onclick="newElement()" id="liveToastBtn" class="button"
           >Ekle</span
         >  -->
-       </form>
+        </div>
         
-        
+ 
       </div>
       <ul id="list">
+            <!-- <li>3 Litre Su İç</li>
+            <li>Ödevleri Yap</li>
+            <li>En Az 3 Saat Kodlama Yap</li>
+            <li>Yemek Yap</li>
+            <li>50 Sayfa Kitap Oku</li>
+           -->
        
       </ul>
       <script
@@ -102,3 +109,7 @@
     <script src="list.js"></script>
   </body>
 </html>
+
+
+<!-- <li> 3 Litre Su İç <button class="close" onclick="deleteItem(${index})">x</button></li> -->
+

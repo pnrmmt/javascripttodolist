@@ -1,74 +1,61 @@
 
-    let userformDOM = document.querySelector("#userForm") //forma ulaşıyoruz
-    userformDOM.addEventListener("submit",addTask)
-    const TASK = document.querySelector("#task")
-    let checkDOM = document.querySelector("#list") //seçme fonksiyonu için
-    
-    
-    //görev kaydetme fonksiyonu
-    function addTask(event) {   
-        event.preventDefault()
-        if(TASK.value != "" && TASK.value !=0) {
-            addList(TASK.value)
-            TASK.value ="" // inputu sıfırladık
-            $('.success').toast('show');
-    
-        }else {
-            $('.error').toast('show'); 
-        }
-    }
-    
-    let addlistDOM = document.querySelector("#list") // eklenen görevleri listeye bağlama fonksiyonu
-    function addList(task){
-        let liDOM =document.createElement("li")
-        liDOM.innerHTML = `${task}`
-        addlistDOM.append(liDOM)
-    
-        let span = document.createElement("SPAN"); // sonradan ekleyeceğimiz görevler için span oluşturduk (kapatma butonu)
-        let unicode1 = document.createTextNode("\u00D7"); // spana karşılık gelen kodu belirttik
-        span.className = "close"; // eklediğimiz spanın hangi sınıfa dahil olduğunu belirttik
-        span.addEventListener("click", silmefunc);
-        span.appendChild(unicode1); // span 'ı, belirttiğimiz kod yazısına bağladık
-        liDOM.appendChild(span); // eklemiş olduğumuz yeni liste elemanını da span'a bağladık
-    
-    
-    }
-    //Yeni eklenen görevi silme fonksiyonu 
-    function silmefunc(e) {
-        const item = e.target.parentElement;
-        item.remove();
-        
-      } 
-      
-    //seçme fonksiyonu
-    checkDOM.addEventListener("click", checkTask)
-    
-    function checkTask (gorevler) {
-        if (gorevler.target.tagName ="li") {
-            gorevler.target.classList.toggle("checked")
-        }
-    }
-    // Toggle: Öğe görünür durumdaysa gizlemeyi, gizli durumdaysa görünür hale getirmemizi sağlar.
-    
-    // //var olan görevlere çarpı butonu
-    // let closeDOM = document.getElementsByTagName("li") // var olan listeyi aldık
-    // for(i=0; i < closeDOM.length; i++) {
-    //     let span =document.createElement("SPAN")
-    //     let unicode2 = document.createTextNode("\u00D7")
-    //     span.className = "close"
-    //     span.appendChild(unicode2) 
-    //     closeDOM[i].appendChild(span) // var olan liste elemanlarını span'a bağladık
-    // }
-    
-    // //var olan görevleri silmek için
-    // let close= document.getElementsByClassName("close")
-    // for (let i = 0; i<close.length; i++) {
-    //     close[i].onclick = function() {
-    //         let li = this.parentElement;
-    //         li.style.display ="none";
-            
+   const TASK = document.getElementsByClassName("todo_input")[0]
+   const addTaskBtnDOM = document.getElementsByClassName("button")[0]
+   let checkDOM = document.querySelector("#list") //seçme fonksiyonu için
+   
+   addTaskBtnDOM.addEventListener("click",() =>{
+       if(TASK.value != "" && TASK.value !=0) {
           
-    //     }
-        
-    // }
-    
+       let localgorevler = JSON.parse(localStorage.getItem("gorev"))
+       if(localgorevler === null) {
+           taskList = []
+       }else {
+           taskList = localgorevler;
+       }
+       taskList.push(TASK.value)
+       localStorage.setItem("gorev",JSON.stringify(taskList))
+           
+               TASK.value ="" // inputu sıfırladık
+               $('.success').toast('show');
+   
+           }else {
+               $('.error').toast('show'); 
+           }
+   
+       
+       showlist()
+   })
+   
+   function showlist() {
+   
+       let outPut = "";
+       let taskListShow = document.querySelector("#list")
+       let localgorevler = JSON.parse(localStorage.getItem("gorev"))
+       if(localgorevler === null) {
+        taskList = []
+       }else {
+        taskList = localgorevler;
+       }
+       taskList.forEach((data, index)=> {
+           outPut += `<li> ${data} <button class="close" onclick="deleteItem(${index})">x</button></li>`
+   
+       });
+       taskListShow.innerHTML = outPut;
+   
+   }
+   showlist()
+   
+   function deleteItem(index){
+       let localgorevler = JSON.parse(localStorage.getItem("gorev"))
+       taskList.splice(index, 1)
+       localStorage.setItem("gorev",JSON.stringify(taskList))
+       showlist()
+   }
+   
+    checkDOM.addEventListener("click", checkTask)
+       
+       function checkTask (gorevler) {
+           if (gorevler.target.tagName ="li") {
+               gorevler.target.classList.toggle("checked")
+           }
+       }
